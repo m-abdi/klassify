@@ -1,0 +1,29 @@
+__label__account_no account number
+__label__account_no acct no
+__label__account_no acc num
+__label__account_no account#
+__label__account_no acct_id
+
+__label__receiver recipient name
+__label__receiver payee
+__label__receiver beneficiary
+__label__receiver destination account
+__label__receiver to_account
+
+__label__description memo
+__label__description transaction details
+__label__description narrative
+__label__description payment comments
+__label__description notes
+
+__label__amount transaction amount
+__label__amount amt
+__label__amount value
+__label__amount debit amount
+__label__amount credit amount
+
+__label__payment_id txn id
+__label__payment_id transaction identifier
+__label__payment_id payment reference
+__label__payment_id payment id
+__label__payment_id payment_ref

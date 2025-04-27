@@ -1,0 +1,79 @@
+__label__account_no شماره حساب
+__label__account_no کد حساب
+__label__account_no شماره حساب مشتری
+__label__account_no شناسه حساب
+__label__account_no شناسه حساب کاربری
+__label__account_no شماره حساب بانکی
+__label__account_no شماره حساب مقصد
+__label__account_no شماره حساب مبدا
+__label__account_no کد حساب بانکی
+__label__account_no شماره حساب بین‌بانکی
+__label__account_no شماره حساب سپرده
+__label__account_no شماره حساب دریافت‌کننده
+__label__account_no شماره حساب واریز
+__label__account_no شماره حساب برداشت
+__label__account_no شماره شبا
+
+__label__receiver نام گیرنده
+__label__receiver دریافت‌کننده
+__label__receiver ذی‌نفع
+__label__receiver حساب مقصد
+__label__receiver به حساب
+__label__receiver نام دریافت‌کننده
+__label__receiver شخص دریافت‌کننده
+__label__receiver نام ذی‌نفع
+__label__receiver مشخصات گیرنده
+__label__receiver اطلاعات گیرنده
+__label__receiver نام طرف مقابل
+__label__receiver نام انتقال گیرنده
+__label__receiver نام و نام خانوادگی گیرنده
+__label__receiver نام کاربری گیرنده
+__label__receiver حساب کاربری گیرنده
+
+__label__description توضیحات
+__label__description جزئیات تراکنش
+__label__description شرح
+__label__description نظرات پرداخت
+__label__description یادداشت‌ها
+__label__description توضیح پرداخت
+__label__description توضیح تراکنش
+__label__description توضیحات بیشتر
+__label__description توضیحات فاکتور
+__label__description شرح پرداخت
+__label__description شرح انتقال
+__label__description جزئیات عملیات
+__label__description یادداشت تراکنش
+__label__description متن توضیح
+__label__description متن توضیحات تراکنش
+
+__label__amount مبلغ تراکنش
+__label__amount مبلغ
+__label__amount ارزش
+__label__amount مبلغ بدهکار
+__label__amount مبلغ بستانکار
+__label__amount ارزش تراکنش
+__label__amount مقدار پرداختی
+__label__amount مقدار برداشت
+__label__amount مقدار واریز
+__label__amount میزان پرداخت
+__label__amount مبلغ قابل پرداخت
+__label__amount مبلغ نهایی
+__label__amount مبلغ فاکتور
+__label__amount مبلغ تسویه
+__label__amount هزینه پرداخت
+
+__label__payment_id شناسه تراکنش
+__label__payment_id کد تراکنش
+__label__payment_id مرجع پرداخت
+__label__payment_id شناسه پرداخت
+__label__payment_id کد پرداخت
+__label__payment_id شماره پیگیری
+__label__payment_id شماره تراکنش
+__label__payment_id شماره پیگیری پرداخت
+__label__payment_id شماره عملیات بانکی
+__label__payment_id کد رهگیری
+__label__payment_id کد عملیات پرداخت
+__label__payment_id شناسه یکتای تراکنش
+__label__payment_id شناسه مالی
+__label__payment_id کد مالی
+__label__payment_id شناسه پرداخت آنلاین
