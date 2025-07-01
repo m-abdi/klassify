@@ -2,3 +2,5 @@ models/base/**
 models/trained/**
 tests/*
 .vscode/
+node_modules/
+dist/
