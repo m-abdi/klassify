@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+  </head>
+  <body
+    style="text-align: center; margin-top: 50px; font-family: Arial, sans-serif"
+  >
+    <h1>FastText Classification Demo</h1>
+    <input
+      id="text"
+      name="text"
+      style="
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: transparent;
+        margin-inline: auto;
+        inline-size: 220px;
+        block-size: 30px;
+        margin-inline: 15px;
+      "
+    />
+    <button
+      id="sendButton"
+      style="
+        padding: 10px 20px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      "
+    >
+      Send
+    </button>
+    <!-- result -->
+    <div>
+      <textarea
+        id="result"
+        style="
+          margin-top: 20px;
+          padding: 10px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          background-color: #f9f9f9;
+          inline-size: 300px;
+          block-size: 200px;
+          margin-inline: auto;
+          text-align: center;
+        "
+      >
+      </textarea>
+    </div>
+    <script type="module">
+      import { FastText } from "../../fasttext/fasttext.js";
+      let ft = new FastText();
+      const url = "../../models/trained/combined-persian.ftz";
+      let model;
+      ft.loadModel(url).then((loadedModel) => {
+        model = loadedModel;
+      });
+      function interferenceHandler() {
+        const text = document.querySelector("#text").value;
+        console.log(text);
+        const predictions = model.predict(text);
+        const resultElement = document.querySelector("#result");
+        console.log(predictions);
+        resultElement.textContent = predictions.get(0);
+      }
+      document
+        .querySelector("#sendButton")
+        .addEventListener("click", interferenceHandler);
+    </script>
+  </body>
+</html>

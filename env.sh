@@ -1,0 +1,1 @@
+docker run --mount type=bind,src="$(pwd)",dst=/app/text-classification -it debian bash

@@ -1,2 +1,4 @@
 models/base/**
 models/trained/**
+tests/*
+.vscode/
