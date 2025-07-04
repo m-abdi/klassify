@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <meta charset="UTF-8" />
@@ -26,16 +26,16 @@
     />
     <button
       id="sendButton"
+      disabled
       style="
         padding: 10px 20px;
         background-color: #4caf50;
         color: white;
         border: none;
         border-radius: 5px;
-        cursor: pointer;
       "
     >
-      Send
+      Loading...
     </button>
     <!-- result -->
     <div>
@@ -56,24 +56,49 @@
       </textarea>
     </div>
     <script type="module">
-      import { FastText } from "../../fasttext/fasttext.js";
-      let ft = new FastText();
-      const url = "../../models/trained/combined-persian.ftz";
-      let model;
-      ft.loadModel(url).then((loadedModel) => {
-        model = loadedModel;
+      const button = document.querySelector("#sendButton");
+      const klassify = new Worker("../../dist/klassify.worker.js", {
+        type: "module",
       });
+
+      klassify.postMessage({
+        action: "init",
+        payload: {
+          config: {
+            combined_fa_fasttext: "../../dist/models/combined-persian.ftz",
+          },
+          settings: { preload: true },
+        },
+      });
+
+      klassify.onmessage = (e) => {
+        if (e.data.result) {
+          console.log("Classification result:", e.data.result);
+          const resultElement = document.querySelector("#result");
+          resultElement.value = e.data?.result?.label;
+        } else {
+          console.log("Worker message:", e.data);
+        }
+
+        if (e.data.status && e.data.status === "READY") {
+          button.removeAttribute("disabled");
+          button.textContent = "Send";
+          button.style.cursor = "pointer";
+          button.addEventListener("click", interferenceHandler);
+        }
+      };
+
       function interferenceHandler() {
         const text = document.querySelector("#text").value;
         console.log(text);
-        const predictions = model.predict(text);
-        const resultElement = document.querySelector("#result");
-        console.log(predictions);
-        resultElement.textContent = predictions.get(0);
+        klassify.postMessage({
+          action: "classify",
+          payload: {
+            text,
+            modelId: "combined",
+          },
+        });
       }
-      document
-        .querySelector("#sendButton")
-        .addEventListener("click", interferenceHandler);
     </script>
   </body>
 </html>

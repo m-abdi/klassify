@@ -1,31 +1,50 @@
 import typescript from "@rollup/plugin-typescript";
 import dts from "rollup-plugin-dts";
+import copy from "rollup-plugin-copy";
 
 export default [
   // JS Bundles
   {
-    input: "src/index.ts",
+    input: { main: "src/main.ts", worker: "src/worker.ts" },
     output: [
       {
-        file: "dist/klassify.esm.js",
+        dir: "dist",
         format: "es",
-        sourcemap: true,
-      },
-      {
-        file: "dist/klassify.umd.js",
-        format: "umd",
-        name: "Klassify", // Global var name in browsers (window.Klassify)
-        sourcemap: true,
+        sourcemap: false,
+        entryFileNames: ({ name }) => {
+          if (name === "worker") return "klassify.worker.js";
+          if (name === "main") return "klassify.js";
+          return "[name].js"; // fallback
+        },
       },
     ],
-    plugins: [typescript({ tsconfig: "./tsconfig.json" })],
+    plugins: [
+      typescript({ tsconfig: "./tsconfig.json" }),
+      copy({
+        targets: [
+          { src: "models/trained/*.ftz", dest: "dist/models" },
+          {
+            src: "src/core/entities/models/fasttext/fasttext_wasm.wasm",
+            dest: "dist/",
+          },
+        ],
+      }),
+    ],
   },
 
   // Type Declarations
   {
-    input: "src/index.ts",
+    input: "src/main.ts",
     output: {
       file: "dist/klassify.d.ts",
+      format: "es",
+    },
+    plugins: [dts()],
+  },
+  {
+    input: "src/worker.ts",
+    output: {
+      file: "dist/klassify.worker.d.ts",
       format: "es",
     },
     plugins: [dts()],
