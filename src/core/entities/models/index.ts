@@ -16,6 +16,7 @@ export default abstract class Model {
       limit,
     }: {
       limit: number;
+      id?: any;
     },
   ): Promise<Result[]> {
     if (this.status !== "READY") {

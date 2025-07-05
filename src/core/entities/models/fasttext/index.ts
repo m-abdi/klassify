@@ -15,15 +15,20 @@ export default class FastText extends Model {
     this.status = "READY";
     return true;
   }
-  async classify(text: string, { limit = 1 }): Promise<Result[]> {
-    await super.classify(text, { limit });
-    const predictions = this.model.predict(text, limit);
+  async classify(
+    text: string,
+    config: { limit: number; id?: any },
+  ): Promise<Result[]> {
+    await super.classify(text, { limit: config?.limit ?? 1 });
+    const predictions = this.model.predict(text, config?.limit ?? 1);
     const predictionsArray = [];
     for (let i = 0; i < Object.getOwnPropertyNames(predictions)?.length; i++) {
       predictionsArray.push(
         new Result(
+          text,
           predictions.get(i)[1]?.replace("__label__", ""),
           predictions?.get(i)[0],
+          config?.id,
         ),
       );
     }
