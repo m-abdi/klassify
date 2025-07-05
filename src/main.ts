@@ -47,7 +47,7 @@ export default class Klassify {
     });
   }
 
-  async classify(text: string, modelId: string) {
+  async classify(text: string, modelId: string, id?: any) {
     if (!this.models?.[modelId]) {
       return new Error("Invalid Model ID!");
     }
@@ -60,7 +60,7 @@ export default class Klassify {
       for (let i = 0; i < relatedModels?.length; i++) {
         const classificationResult = await relatedModels[i][1].classify(text, {
           limit: 1,
-          id: modelId,
+          id,
         });
         results = [...results, ...classificationResult];
       }

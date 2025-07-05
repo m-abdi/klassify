@@ -7,6 +7,7 @@ export interface Message {
     settings?: any;
     text?: string;
     modelId?: string;
+    id?: any;
   };
 }
 
@@ -31,8 +32,8 @@ self.onmessage = async (e: { data: Message }) => {
         return;
       }
       self.postMessage({ status: "WORKING" });
-      const { text, modelId } = payload;
-      const result = await klassifyInstance.classify(text, modelId);
+      const { text, modelId, id } = payload;
+      const result = await klassifyInstance.classify(text, modelId, id);
       self.postMessage({ result });
       self.postMessage({ status: klassifyInstance.status });
       break;
