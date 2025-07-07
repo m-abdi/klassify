@@ -1920,18 +1920,8 @@ var FastTextModule = (() => {
     }
 
     var wasmBinaryFile;
-    if (Module["locateFile"]) {
-      wasmBinaryFile = "fasttext_wasm.wasm";
-      if (!isDataURI(wasmBinaryFile)) {
-        wasmBinaryFile = locateFile(wasmBinaryFile);
-      }
-    } else {
-      // Use bundler-friendly `new URL(..., import.meta.url)` pattern; works in browsers too.
-      wasmBinaryFile = new URL(
-        "fasttext_wasm.wasm",
-        import.meta.url,
-      ).toString();
-    }
+    // Use bundler-friendly `new URL(..., import.meta.url)` pattern; works in browsers too.
+    wasmBinaryFile = new URL("fasttext_wasm.wasm", import.meta.url).toString();
 
     function getBinary(file) {
       try {
