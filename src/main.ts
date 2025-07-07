@@ -20,7 +20,7 @@ export default class Klassify {
       const modelLang = modelInfo[1];
       const modelName = modelInfo[2];
       let model: Model;
-      if (modelName === "fasttext") {
+      if (modelName === "ft") {
         model = new FastText(value);
       }
       model = new FastText(value);
