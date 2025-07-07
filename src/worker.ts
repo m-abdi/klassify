@@ -12,7 +12,9 @@ export interface Message {
 }
 
 self.onmessage = async (e: { data: Message }) => {
-  const Klassify = (await import("./main.js")).default;
+  const Klassify = (
+    await import(new URL("./klassify.js", import.meta.url).toString())
+  ).default;
 
   const { action, payload } = e.data;
   switch (action) {
