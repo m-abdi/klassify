@@ -47,14 +47,27 @@ export default class Klassify {
     });
   }
 
+  private detectLanguage(text: string) {
+    const persianRegex = /[\u0600-\u06FF]/g; // Persian/Arabic Unicode block
+    const englishRegex = /[A-Za-z]/g; // English letters
+
+    const persianMatches = text.match(persianRegex) || [];
+    const englishMatches = text.match(englishRegex) || [];
+
+    if (persianMatches.length > englishMatches.length) {
+      return "fa";
+    } else if (englishMatches.length > persianMatches.length) {
+      return "en";
+    }
+  }
+
   async classify(text: string, modelId: string, id?: any) {
     if (!this.models?.[modelId]) {
       return new Error("Invalid Model ID!");
     }
     this.status = "WORKING";
-    // implemnt this later!
-    let lang = "fa";
-    if (this.models?.[modelId]?.[lang]) {
+    let lang = this.detectLanguage(text.replace(/_/g, ""));
+    if (lang && this.models?.[modelId]?.[lang]) {
       let results: Result[] = [];
       const relatedModels = Object.entries(this.models?.[modelId]?.[lang]);
       for (let i = 0; i < relatedModels?.length; i++) {
@@ -67,8 +80,9 @@ export default class Klassify {
       // implement combination of results later!
       this.status = "READY";
       return results[0];
+    } else {
+      this.status = "READY";
+      return new Error("Language of the text is not supported.");
     }
-    this.status = "READY";
-    return null;
   }
 }
