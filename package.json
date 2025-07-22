@@ -1,8 +1,8 @@
 {
   "name": "klassify",
-  "main": "dist/klassify.umd.js",
-  "module": "dist/klassify.es.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/klassify.js",
+  "module": "dist/klassify.js",
+  "types": "dist/klassify.d.ts",
   "type": "module",
   "scripts": {
     "format": "npx prettier . --write",
