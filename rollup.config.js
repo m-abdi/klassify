@@ -1,6 +1,7 @@
 import typescript from "@rollup/plugin-typescript";
 import dts from "rollup-plugin-dts";
 import copy from "rollup-plugin-copy";
+import { importMetaAssets } from "@web/rollup-plugin-import-meta-assets";
 
 export default [
   // JS Bundles
@@ -20,14 +21,9 @@ export default [
     ],
     plugins: [
       typescript({ tsconfig: "./tsconfig.json" }),
+      importMetaAssets({}),
       copy({
-        targets: [
-          { src: "models/trained/*.ftz", dest: "dist/models" },
-          {
-            src: "src/core/entities/models/fasttext/fasttext_wasm.wasm",
-            dest: "dist/",
-          },
-        ],
+        targets: [{ src: "models/trained/*.ftz", dest: "dist/models" }],
       }),
     ],
   },

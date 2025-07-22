@@ -1921,7 +1921,7 @@ var FastTextModule = (() => {
 
     var wasmBinaryFile;
     // Use bundler-friendly `new URL(..., import.meta.url)` pattern; works in browsers too.
-    wasmBinaryFile = new URL("fasttext_wasm.wasm", import.meta.url).toString();
+    wasmBinaryFile = new URL("ft_wasm.wasm", import.meta.url).toString();
 
     function getBinary(file) {
       try {
