@@ -27,6 +27,7 @@ export default class Klassify {
       this.models = {
         ...this.models,
         [modelId]: {
+          ...this.models?.[modelId],
           [modelLang]: {
             ...this?.models?.[modelId]?.[modelLang],
             [modelName]: model,

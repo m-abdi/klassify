@@ -1,1 +1,1 @@
-docker run --mount type=bind,src="$(pwd)",dst=/app/text-classification -it debian bash
+docker run --name klassify --mount type=bind,src="$(pwd)",dst=/app/klassify -it debian bash
