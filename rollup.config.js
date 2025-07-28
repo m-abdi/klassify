@@ -22,7 +22,6 @@ export default [
       typescript({ tsconfig: "./tsconfig.json" }),
       copy({
         targets: [
-          { src: "models/trained/*.ftz", dest: "dist/models" },
           {
             src: "src/core/entities/models/fasttext/ft_wasm.wasm",
             dest: "dist/",
