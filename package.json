@@ -11,7 +11,6 @@
   "devDependencies": {
     "@rollup/plugin-typescript": "^12.1.4",
     "@rollup/plugin-url": "^8.0.2",
-    "@web/rollup-plugin-import-meta-assets": "^2.3.0",
     "prettier": "3.6.2",
     "rimraf": "^6.0.1",
     "rollup": "^4.44.1",
