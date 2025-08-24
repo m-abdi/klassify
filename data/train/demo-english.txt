@@ -1,0 +1,88 @@
+__label__نام_گیرنده recipient  
+__label__نام_گیرنده delivery_recipient  
+__label__نام_گیرنده receiver  
+__label__نام_گیرنده package_recipient  
+__label__نام_گیرنده person  
+__label__نام_گیرنده individual  
+__label__نام_گیرنده name  
+__label__نام_گیرنده customer  
+__label__نام_گیرنده destination  
+__label__نام_گیرنده recipientName  
+__label__نام_گیرنده rec_name  
+__label__نام_گیرنده name_receiver  
+__label__نام_گیرنده receiverName  
+__label__نام_گیرنده cust_name  
+__label__نام_گیرنده fullName  
+__label__نام_گیرنده recipient_fullname  
+__label__نام_گیرنده rcp_name
+
+
+__label__شماره_همراه mobile_number  
+__label__شماره_همراه phone_mobile  
+__label__شماره_همراه number_mobile  
+__label__شماره_همراه phone mobile  
+__label__شماره_همراه mobile_line  
+__label__شماره_همراه phone_number  
+__label__شماره_همراه mobile_phone  
+__label__شماره_همراه phone_line  
+__label__شماره_همراه mobileNo  
+__label__شماره_همراه mobileNum  
+__label__شماره_همراه mob_no  
+__label__شماره_همراه contact_mobile  
+__label__شماره_همراه phoneNo  
+__label__شماره_همراه cellNumber  
+__label__شماره_همراه contactNo  
+__label__شماره_همراه cellphone  
+__label__شماره_همراه phoneContact  
+__label__شماره_همراه mbl_no
+
+
+
+__label__محل_سکونت residence_address  
+__label__محل_سکونت home_address  
+__label__محل_سکونت place_of_living  
+__label__محل_سکونت living_address  
+__label__محل_سکونت place_of_stay  
+__label__محل_سکونت house_address  
+__label__محل_سکونت address_location  
+__label__محل_سکونت home_living_place  
+__label__محل_سکونت homeAddr  
+__label__محل_سکونت livingAddr  
+__label__محل_سکونت address  
+__label__محل_سکونت res_address  
+__label__محل_سکونت addr_home  
+__label__محل_سکونت houseLoc  
+__label__محل_سکونت addr_res  
+__label__محل_سکونت stayAddress  
+__label__محل_سکونت homeloc
+
+
+
+__label__کار duty  
+__label__کار profession_activity  
+__label__کار occupation  
+__label__کار profession  
+__label__کار job_duty  
+__label__کار activity  
+__label__کار work  
+__label__کار occupation_activity  
+__label__کار jobTitle  
+__label__کار job  
+__label__کار workField  
+__label__کار emp_title  
+__label__کار prof  
+__label__کار profession_title  
+__label__کار work_type  
+__label__کار position  
+__label__کار job_type  
+__label__کار career
+
+
+
+__label__متفرقه Hello
+__label__متفرقه Cat
+__label__متفرقه Computer
+__label__متفرقه Football
+__label__متفرقه I'm from Shiraz
+__label__متفرقه Red car
+__label__متفرقه Sun
