@@ -12,7 +12,8 @@
     "esModuleInterop": true,
     "strict": true,
     "skipLibCheck": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "types": ["jest", "node"]
   },
-  "include": ["src"]
+  "include": ["src/**/*.ts", "src/**/*.js", "tests/**/*.ts"]
 }

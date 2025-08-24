@@ -6,16 +6,21 @@
   "type": "module",
   "scripts": {
     "format": "npx prettier . --write",
+    "test": "jest",
     "build": "rimraf dist && rollup -c"
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^12.1.4",
     "@rollup/plugin-url": "^8.0.2",
+    "@types/jest": "^30.0.0",
+    "jest": "^30.0.5",
     "prettier": "3.6.2",
     "rimraf": "^6.0.1",
     "rollup": "^4.44.1",
     "rollup-plugin-copy": "^3.5.0",
     "rollup-plugin-dts": "^6.2.1",
+    "ts-jest": "^29.4.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   },
   "exports": {

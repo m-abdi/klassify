@@ -12,7 +12,7 @@ export interface Message {
 }
 
 self.onmessage = async (e: { data: Message }) => {
-  const Klassify = (await import("./main")).default;
+  const Klassify = (await import("./klassify")).default;
 
   const { action, payload } = e.data;
   switch (action) {
