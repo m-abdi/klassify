@@ -5,7 +5,7 @@ import copy from "rollup-plugin-copy";
 export default [
   // JS Bundles
   {
-    input: { main: "src/main.ts", worker: "src/worker.ts" },
+    input: { klassify: "src/klassify.ts", worker: "src/worker.ts" },
     output: [
       {
         dir: "dist",
@@ -13,7 +13,6 @@ export default [
         sourcemap: false,
         entryFileNames: ({ name }) => {
           if (name === "worker") return "klassify.worker.js";
-          if (name === "main") return "klassify.js";
           return "[name].js"; // fallback
         },
       },
@@ -33,7 +32,7 @@ export default [
 
   // Type Declarations
   {
-    input: "src/main.ts",
+    input: "src/klassify.ts",
     output: {
       file: "dist/klassify.d.ts",
       format: "es",

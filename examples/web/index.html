@@ -65,8 +65,8 @@
         action: "init",
         payload: {
           config: {
-            combined_fa_ft: "../../models/trained/combined-persian.ftz",
-            combined_en_ft: "../../models/trained/combined-english.ftz",
+            demo_fa_ft: "../../models/trained/demo-persian.ftz",
+            demo_en_ft: "../../models/trained/demo-english.ftz",
           },
           settings: { preload: true },
         },
@@ -96,7 +96,7 @@
           action: "classify",
           payload: {
             text,
-            modelId: "combined",
+            modelId: "demo",
           },
         });
       }
