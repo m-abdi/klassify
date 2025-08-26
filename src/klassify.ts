@@ -38,7 +38,7 @@ export default class Klassify {
         import("./core/entities/models/candle/ca").then((res) => {
           const model = new res.default({
             url: value?.baseURL,
-            labels: value?.labels ?? config?.labels,
+            labels: value?.labels ?? Object.keys(config?.labels ?? {}),
             documentPrefix: value?.documentPrefix,
             searchPrefix: value?.searchPrefix,
           });
