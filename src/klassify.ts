@@ -121,7 +121,7 @@ export default class Klassify {
       return new Error("Invalid Model ID!");
     }
     this.status = "WORKING";
-    text = this.normalize(text);
+    // text = this.normalize(text);
     let lang = this.detectLanguage(text) || "xx";
     const targetModel =
       this.models?.[modelId]?.[lang] || this.models?.[modelId]?.["xx"];
