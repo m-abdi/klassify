@@ -2,3 +2,4 @@ dist/
 data/
 node_modules/
 tests/
+src/core/entities/models/candle/candle/**

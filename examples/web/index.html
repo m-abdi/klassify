@@ -65,8 +65,20 @@
         action: "init",
         payload: {
           config: {
-            demo_fa_ft: "../../models/trained/demo-persian.ftz",
-            demo_en_ft: "../../models/trained/demo-english.ftz",
+            // demo_fa_ft: "../../models/trained/demo-persian.ftz",
+            // demo_en_ft: "../../models/trained/demo-english.ftz",
+            // demo_en_ca: {
+            //   baseURL:
+            //     "https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/",
+            //   labels: ["Fullname", "Mobile Number", "Address", "Work"],
+            // },
+            demo_xx_ca: {
+              baseURL:
+                "https://huggingface.co/intfloat/multilingual-e5-small/resolve/main/",
+              labels: ["نام و نام خانوادگی", "تلفن همراه", "محل سکونت", "کار"],
+              searchPrefix: "query: ",
+              documentPrefix: "passage: ",
+            },
           },
           settings: { preload: true },
         },
