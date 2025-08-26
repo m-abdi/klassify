@@ -67,8 +67,6 @@ export default class Candle extends Model {
   }
 
   private getEmbeddings(text: string, prefix = "") {
-    console.log(`${prefix}${text}`);
-
     const output = this.lib.get_embeddings({
       sentences: [`${prefix}${text}`],
       normalize_embeddings: true,
