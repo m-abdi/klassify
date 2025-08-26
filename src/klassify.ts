@@ -6,7 +6,11 @@ export default class Klassify {
   private loadedModels = 0;
   models: { [key: string]: { [key: string]: { [key: string]: any } } } = {};
   constructor(
-    config: object,
+    config: {
+      models: any;
+      labels: { [key: string]: number };
+      hasHeaders?: boolean;
+    },
     settings: { preload: boolean; onLoad?: () => any },
   ) {
     this.status = "INITIALIZED";
@@ -20,7 +24,7 @@ export default class Klassify {
       const modelName = modelInfo[2];
       if (modelName === "ft") {
         import("./core/entities/models/fasttext/ft").then((res) => {
-          const model = new res.default(value);
+          const model = new res.default(value as any);
           this.finalizeInitialization(
             modelId,
             modelLang,
@@ -34,7 +38,7 @@ export default class Klassify {
         import("./core/entities/models/candle/ca").then((res) => {
           const model = new res.default({
             url: value?.baseURL,
-            labels: value?.labels,
+            labels: value?.labels ?? config?.labels,
             documentPrefix: value?.documentPrefix,
             searchPrefix: value?.searchPrefix,
           });
