@@ -1,0 +1,3 @@
+[submodule "src/core/entities/models/candle/candle"]
+	path = src/core/entities/models/candle/candle
+	url = https://github.com/huggingface/candle.git

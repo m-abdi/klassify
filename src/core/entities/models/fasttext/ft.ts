@@ -1,5 +1,5 @@
-import Model from "../index.js";
-import Result from "../../result.js";
+import Model from "../index";
+import Result from "../../result";
 import { FastText as FastTextLib } from "./fasttext.js";
 
 export default class FastText extends Model {

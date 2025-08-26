@@ -15,12 +15,9 @@ fasttext supervised -input data/train/demo-english.txt -output models/trained/de
 Quantize
 
 ```
-fasttext quantize \
-  -input data/train/demo-persian.txt \
-  -output models/trained/demo-persian \
-  -cutoff 100000 \
-  -retrain \
-  -thread	9
+fasttext quantize -input data/train/demo-persian.txt -output models/trained/demo-persian -cutoff 100000 -retrain -thread	9
+
+./fasttext quantize -input data/train/demo-english.txt -output models/trained/demo-english -cutoff 250000 -retrain -thread    9
 ```
 
 Test
@@ -28,7 +25,7 @@ Test
 ```
 ./fasttext test models/trained/demo-persian.bin data/test/demo-persian.txt > tests/demo-persian.txt
 
-./fasttext test models/trained/demo-persian.ftz data/test/demo-persian.txt > tests/demo-persian-quantized.txt
+./fasttext test models/trained/demo-english.bin data/test/demo-english.txt > tests/demo-english.txt
 ```
 
 quantized version
@@ -38,6 +35,8 @@ quantized version
 ```
 
 fasttext test models/trained/demo-persian.ftz data/test/demo-persian.txt > tests/demo-persian-quantized.txt
+
+./fasttext test models/trained/demo-english.ftz data/test/demo-english.txt > tests/demo-english-quantized.txt
 
 ```
 

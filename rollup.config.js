@@ -25,6 +25,10 @@ export default [
             src: "src/core/entities/models/fasttext/ft_wasm.wasm",
             dest: "dist/",
           },
+          {
+            src: "src/core/entities/models/candle/candle/candle-wasm-examples/bert/build/m_bg.wasm",
+            dest: "dist/",
+          },
         ],
       }),
     ],

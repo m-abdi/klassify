@@ -30,6 +30,23 @@ export default class Klassify {
             config,
           );
         });
+      } else if (modelName === "ca") {
+        import("./core/entities/models/candle/ca").then((res) => {
+          const model = new res.default({
+            url: value?.baseURL,
+            labels: value?.labels,
+            documentPrefix: value?.documentPrefix,
+            searchPrefix: value?.searchPrefix,
+          });
+          this.finalizeInitialization(
+            modelId,
+            modelLang,
+            modelName,
+            model,
+            settings,
+            config,
+          );
+        });
       }
     });
   }
@@ -66,8 +83,8 @@ export default class Klassify {
   }
 
   private detectLanguage(text: string) {
-    const persianRegex = /[\u0600-\u06FF]/g; // Persian/Arabic Unicode block
-    const englishRegex = /[A-Za-z]/g; // English letters
+    const persianRegex = /[\u0600-\u06FF\u06F0-\u06F9]/g; // Persian/Arabic Unicode block
+    const englishRegex = /[A-Za-z0-9]/g; // English letters
 
     const persianMatches = text.match(persianRegex) || [];
     const englishMatches = text.match(englishRegex) || [];
@@ -101,10 +118,12 @@ export default class Klassify {
     }
     this.status = "WORKING";
     text = this.normalize(text);
-    let lang = this.detectLanguage(text);
-    if (lang && this.models?.[modelId]?.[lang]) {
+    let lang = this.detectLanguage(text) || "xx";
+    const targetModel =
+      this.models?.[modelId]?.[lang] || this.models?.[modelId]?.["xx"];
+    if (lang && targetModel) {
       let results: Result[] = [];
-      const relatedModels = Object.entries(this.models?.[modelId]?.[lang]);
+      const relatedModels = Object.entries(targetModel);
       for (let i = 0; i < relatedModels?.length; i++) {
         const classificationResult = await relatedModels[i][1].classify(text, {
           limit: 1,
