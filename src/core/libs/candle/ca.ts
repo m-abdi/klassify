@@ -1,4 +1,4 @@
-import Result from "../../result";
+import Result from "../../entities/result";
 import Model from "../index";
 import init, {
   Model as CandleModel,

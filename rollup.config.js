@@ -5,15 +5,14 @@ import copy from "rollup-plugin-copy";
 export default [
   // JS Bundles
   {
-    input: { klassify: "src/klassify.ts", worker: "src/worker.ts" },
+    input: { klassify: "src/klassify.ts", "klassify.worker": "src/klassify.worker.ts" },
     output: [
       {
         dir: "dist",
         format: "es",
         sourcemap: false,
-        entryFileNames: ({ name }) => {
-          if (name === "worker") return "klassify.worker.js";
-          return "[name].js"; // fallback
+        chunkFileNames: ({ name }) => {
+          return "[name].js";
         },
       },
     ],
@@ -22,11 +21,11 @@ export default [
       copy({
         targets: [
           {
-            src: "src/core/entities/models/fasttext/ft_wasm.wasm",
+            src: "src/core/libs/fasttext/ft.wasm",
             dest: "dist/",
           },
           {
-            src: "src/core/entities/models/candle/candle/candle-wasm-examples/bert/build/m_bg.wasm",
+            src: "src/core/libs/candle/candle/candle-wasm-examples/bert/build/m_bg.wasm",
             dest: "dist/",
           },
         ],
@@ -44,7 +43,7 @@ export default [
     plugins: [dts()],
   },
   {
-    input: "src/worker.ts",
+    input: "src/klassify.worker.ts",
     output: {
       file: "dist/klassify.worker.d.ts",
       format: "es",

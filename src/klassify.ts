@@ -1,20 +1,37 @@
-import Model from "./core/entities/models";
+import Model from "./core/libs";
 import Result from "./core/entities/result";
 
+type Status = "INITIALIZED" | "READY" | "WORKING";
+
+type Config = {
+  models: {
+    [key: string]:
+      | string
+      | {
+          baseURL: string;
+          searchPrefix?: string;
+          documentPrefix?: string;
+        };
+  };
+  labels: {
+    [key: string]: number;
+  };
+  hasHeaders?: boolean;
+  preload?: boolean;
+  nomalize?: boolean;
+  onLoad?: () => any;
+};
+
 export default class Klassify {
-  status: "INITIALIZED" | "READY" | "WORKING";
+  status?: Status;
+  config: Config;
   private loadedModels = 0;
   models: { [key: string]: { [key: string]: { [key: string]: any } } } = {};
-  constructor(
-    config: {
-      models: any;
-      labels: { [key: string]: number };
-      hasHeaders?: boolean;
-    },
-    settings: { preload: boolean; onLoad?: () => any },
-  ) {
-    this.status = "INITIALIZED";
-    Object.entries(config).map(([key, value]) => {
+
+  constructor(config: Config) {
+    this.config = config;
+    this.changeStatus("INITIALIZED");
+    Object.entries(config?.models).map(([key, value]) => {
       const modelInfo = key.split("_");
       if (modelInfo.length < 3) {
         throw new Error(`Invalid model config argument: ${key}`);
@@ -22,37 +39,28 @@ export default class Klassify {
       const modelId = modelInfo[0];
       const modelLang = modelInfo[1];
       const modelName = modelInfo[2];
+
       if (modelName === "ft") {
-        import("./core/entities/models/fasttext/ft").then((res) => {
+        import("./core/libs/fasttext/ft").then((res) => {
           const model = new res.default(value as any);
-          this.finalizeInitialization(
-            modelId,
-            modelLang,
-            modelName,
-            model,
-            settings,
-            config,
-          );
+          this.finalizeInitialization(modelId, modelLang, modelName, model);
         });
-      } else if (modelName === "ca") {
-        import("./core/entities/models/candle/ca").then((res) => {
+      } else if (modelName === "ca" && typeof value !== "string") {
+        import("./core/libs/candle/ca").then((res) => {
           const model = new res.default({
             url: value?.baseURL,
-            labels: value?.labels ?? Object.keys(config?.labels ?? {}),
+            labels: Object.keys(config?.labels ?? {}),
             documentPrefix: value?.documentPrefix,
             searchPrefix: value?.searchPrefix,
           });
-          this.finalizeInitialization(
-            modelId,
-            modelLang,
-            modelName,
-            model,
-            settings,
-            config,
-          );
+          this.finalizeInitialization(modelId, modelLang, modelName, model);
         });
       }
     });
+  }
+
+  private changeStatus(newStatus: Status) {
+    this.status = newStatus;
   }
 
   private finalizeInitialization(
@@ -60,8 +68,6 @@ export default class Klassify {
     modelLang: string,
     modelName: string,
     model: Model,
-    settings: { preload: boolean; onLoad?: () => any },
-    config: object,
   ) {
     this.models = {
       ...this.models,
@@ -73,13 +79,14 @@ export default class Klassify {
         },
       },
     };
-    if (settings?.preload) {
-      model?.load().then((resp) => {
+
+    if (this.config?.preload) {
+      model?.load().then((resp: boolean) => {
         if (resp) {
           this.loadedModels++;
-          if (this.loadedModels === Object.keys(config)?.length) {
-            this.status = "READY";
-            settings?.onLoad?.();
+          if (this.loadedModels === Object.keys(this.config?.models)?.length) {
+            this.changeStatus("READY");
+            this.config?.onLoad?.();
           }
         }
       });
@@ -120,8 +127,10 @@ export default class Klassify {
     if (!this.models?.[modelId]) {
       return new Error("Invalid Model ID!");
     }
-    this.status = "WORKING";
-    // text = this.normalize(text);
+    this.changeStatus("WORKING");
+    if (this.config?.nomalize) {
+      text = this.normalize(text);
+    }
     let lang = this.detectLanguage(text) || "xx";
     const targetModel =
       this.models?.[modelId]?.[lang] || this.models?.[modelId]?.["xx"];
@@ -136,10 +145,10 @@ export default class Klassify {
         results = [...results, ...classificationResult];
       }
       // implement combination of results later!
-      this.status = "READY";
+      this.changeStatus("READY");
       return results[0];
     } else {
-      this.status = "READY";
+      this.changeStatus("READY");
       return new Error("Language of the text is not supported.");
     }
   }

@@ -1,4 +1,4 @@
-import Result from "../result";
+import Result from "../entities/result";
 
 export default abstract class Model {
   status: "READY" | "INITIALIZED";

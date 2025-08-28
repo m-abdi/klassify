@@ -1,4 +1,3 @@
-// klassify.worker.js
 let klassifyInstance: any;
 export interface Message {
   action: "init" | "classify";
@@ -17,8 +16,8 @@ self.onmessage = async (e: { data: Message }) => {
   const { action, payload } = e.data;
   switch (action) {
     case "init":
-      klassifyInstance = new Klassify(payload?.config as object, {
-        ...payload?.settings,
+      klassifyInstance = new Klassify({
+        ...(payload?.config as any),
         onLoad() {
           self.postMessage({ status: klassifyInstance.status });
         },

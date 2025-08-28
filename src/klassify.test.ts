@@ -5,7 +5,7 @@ describe("Klassify private methods", () => {
 
   beforeEach(() => {
     // minimal config to instantiate
-    instance = new Klassify({}, { preload: false });
+    instance = new Klassify({ preload: false } as any);
   });
 
   describe("detectLanguage", () => {
