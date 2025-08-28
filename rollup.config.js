@@ -5,7 +5,10 @@ import copy from "rollup-plugin-copy";
 export default [
   // JS Bundles
   {
-    input: { klassify: "src/klassify.ts", "klassify.worker": "src/klassify.worker.ts" },
+    input: {
+      klassify: "src/klassify.ts",
+      "klassify.worker": "src/klassify.worker.ts",
+    },
     output: [
       {
         dir: "dist",
@@ -21,11 +24,11 @@ export default [
       copy({
         targets: [
           {
-            src: "src/core/libs/fasttext/ft.wasm",
+            src: "src/core/libs/fasttext/*.wasm",
             dest: "dist/",
           },
           {
-            src: "src/core/libs/candle/candle/candle-wasm-examples/bert/build/m_bg.wasm",
+            src: "src/core/libs/candle/candle/candle-wasm-examples/bert/build/*.wasm",
             dest: "dist/",
           },
         ],
