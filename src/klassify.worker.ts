@@ -3,10 +3,10 @@ export interface Message {
   action: "init" | "classify";
   payload: {
     config?: object;
-    settings?: any;
     text?: string;
     modelId?: string;
     id?: any;
+    labels?: string[];
   };
 }
 
@@ -31,8 +31,8 @@ self.onmessage = async (e: { data: Message }) => {
         return;
       }
       self.postMessage({ status: "WORKING" });
-      const { text, modelId, id } = payload;
-      const result = await klassifyInstance.classify(text, modelId, id);
+      const { text, modelId, id, labels } = payload;
+      const result = await klassifyInstance.classify(text, modelId, id, labels);
       self.postMessage({ result });
       self.postMessage({ status: klassifyInstance.status });
       break;

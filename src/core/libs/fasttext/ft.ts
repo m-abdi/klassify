@@ -1,4 +1,4 @@
-import Model from "../index";
+import Model, { ModelConfig } from "../index";
 import Result from "../../entities/result";
 import { FastText as FastTextLib } from "./fasttext.js";
 
@@ -6,8 +6,8 @@ export default class FastText extends Model {
   private readonly lib: any;
   private model: any;
 
-  constructor(url: string) {
-    super(url);
+  constructor(config: ModelConfig) {
+    super(config);
     this.lib = new FastTextLib();
   }
   async load() {
@@ -17,7 +17,7 @@ export default class FastText extends Model {
   }
   async classify(
     text: string,
-    config: { limit: number; id?: any },
+    config: { limit: number; id?: any; labels?: string[] },
   ): Promise<Result[]> {
     await super.classify(text, { limit: config?.limit ?? 1 });
     const predictions = this.model.predict(text, config?.limit ?? 1);

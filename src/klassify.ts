@@ -42,7 +42,7 @@ export default class Klassify {
 
       if (modelName === "ft") {
         import("./core/libs/fasttext/ft").then((res) => {
-          const model = new res.default(value as any);
+          const model = new res.default({ url: value as any });
           this.finalizeInitialization(modelId, modelLang, modelName, model);
         });
       } else if (modelName === "ca" && typeof value !== "string") {
@@ -123,7 +123,12 @@ export default class Klassify {
     return this.camelCaseToNormal(input.replace(/_/g, " ")).toLowerCase();
   }
 
-  async classify(text: string, modelId: string, id?: any) {
+  async classify(
+    text: string,
+    modelId: string,
+    id?: any,
+    labels?: { [label: string]: number },
+  ) {
     if (!this.models?.[modelId]) {
       return new Error("Invalid Model ID!");
     }
@@ -141,6 +146,7 @@ export default class Klassify {
         const classificationResult = await relatedModels[i][1].classify(text, {
           limit: 1,
           id,
+          labels: Object.keys(labels ?? {}),
         });
         results = [...results, ...classificationResult];
       }
