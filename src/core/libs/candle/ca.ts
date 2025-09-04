@@ -21,15 +21,7 @@ export default class Candle extends Model {
   }
 
   private async fetchArrayBuffer(url: string) {
-    const cacheName = "klassify-ca-cache";
-    const cache = await caches.open(cacheName);
-    const cachedResponse = await cache.match(url);
-    if (cachedResponse) {
-      const data = await cachedResponse.arrayBuffer();
-      return new Uint8Array(data);
-    }
-    const res = await fetch(url, { cache: "force-cache" });
-    cache.put(url, res.clone());
+    const res = await fetch(url);
     return new Uint8Array(await res.arrayBuffer());
   }
 
