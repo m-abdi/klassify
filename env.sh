@@ -1,1 +1,0 @@
-docker run --name klassify --mount type=bind,src="$(pwd)",dst=/app/klassify -it debian bash
