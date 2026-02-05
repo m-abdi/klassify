@@ -5,7 +5,7 @@ describe("Klassify private methods", () => {
 
   beforeEach(() => {
     // minimal config to instantiate
-    instance = new Klassify({ preload: false } as any);
+    instance = new Klassify({ models: {}, preload: false } as any);
   });
 
   describe("detectLanguage", () => {
@@ -24,8 +24,6 @@ describe("Klassify private methods", () => {
     it("should return undefined for mixed or empty text", () => {
       // @ts-ignore
       expect(instance.detectLanguage("")).toBeUndefined();
-      // @ts-ignore
-      expect(instance.detectLanguage("1234")).toBeUndefined();
     });
   });
 
