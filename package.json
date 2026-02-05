@@ -1,11 +1,14 @@
 {
   "name": "klassify",
+  "version": "1.0.0",
+  "private": false,
   "main": "dist/klassify.js",
   "module": "dist/klassify.js",
   "types": "dist/klassify.d.ts",
   "type": "module",
   "scripts": {
     "format": "npx prettier . --write",
+    "format:check": "npx prettier . --check",
     "test": "jest",
     "build": "rimraf dist && rollup -c"
   },

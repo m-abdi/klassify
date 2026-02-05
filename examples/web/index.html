@@ -114,6 +114,18 @@
         >
         </textarea>
       </div>
+      <div
+        style="
+          display: grid;
+          grid-template-columns: 1fr 5fr;
+          grid-template-rows: 1;
+          align-items: center;
+          gap: 10px;
+        "
+      >
+        <label for="precision" style="text-align: start">Precision:</label>
+        <p id="precision" style="font-size: 0.8rem"></p>
+      </div>
     </form>
 
     <script type="module">
@@ -131,15 +143,15 @@
         payload: {
           config: {
             models: {
-              // demo_en_ca: {
-              //   baseURL:
-              //     "https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/",
-              // },
-              demo_xx_candle: {
-                baseURL: "/models/trained/multilingual-e5-small/",
-                searchPrefix: "query: ",
-                documentPrefix: "passage: ",
+              demo_en_ca: {
+                baseURL:
+                  "https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/",
               },
+              // demo_xx_candle: {
+              //   baseURL: "/models/trained/multilingual-e5-small/",
+              //   searchPrefix: "query: ",
+              //   documentPrefix: "passage: ",
+              // },
             },
             preload: false,
           },
@@ -151,7 +163,9 @@
 
         if (e.data.result) {
           const resultElement = document.querySelector("#result");
+          const precisionElement = document.querySelector("#precision");
           resultElement.value = e.data?.result?.label;
+          precisionElement.textContent = `${(e.data?.result?.precision * 100).toFixed(0)} %`;
         }
 
         if (e.data.status) {

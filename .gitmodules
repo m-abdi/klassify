@@ -1,3 +1,3 @@
-[submodule "src/core/libs/candle/candle"]
-	path = src/core/libs/candle/candle
+[submodule "src/core/backends/candle/candle"]
+	path = src/core/backends/candle/candle
 	url = https://github.com/huggingface/candle.git
