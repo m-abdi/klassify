@@ -24,11 +24,11 @@ export default [
       copy({
         targets: [
           {
-            src: "src/core/libs/fasttext/*.wasm",
+            src: "src/core/backends/fasttext/*.wasm",
             dest: "dist/",
           },
           {
-            src: "src/core/libs/candle/candle/candle-wasm-examples/bert/build/*.wasm",
+            src: "src/core/backends/candle/candle/candle-wasm-examples/bert/build/*.wasm",
             dest: "dist/",
           },
         ],

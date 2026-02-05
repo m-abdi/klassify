@@ -6,57 +6,122 @@
       name="viewport"
       content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
+    <title>Klassify Demo</title>
   </head>
+
   <body
     style="text-align: center; margin-top: 50px; font-family: Arial, sans-serif"
   >
-    <h1>FastText Classification Demo</h1>
-    <input
-      id="text"
-      name="text"
+    <h1 style="margin-inline-start: 50px; font-style: italic">Klassify Demo</h1>
+    <form
       style="
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        background-color: transparent;
+        inline-size: fit-content;
         margin-inline: auto;
-        inline-size: 220px;
-        block-size: 30px;
-        margin-inline: 15px;
-      "
-    />
-    <button
-      id="sendButton"
-      disabled
-      style="
-        padding: 10px 20px;
-        background-color: #4caf50;
-        color: white;
-        border: none;
-        border-radius: 5px;
+        display: grid;
+        grid-template-columns: 1;
+        grid-template-rows: 4;
+        gap: 10px;
+        align-items: center;
       "
     >
-      Loading...
-    </button>
-    <!-- result -->
-    <div>
-      <textarea
-        id="result"
+      <div
         style="
-          margin-top: 20px;
-          padding: 10px;
-          border: 1px solid #ccc;
-          border-radius: 5px;
-          background-color: #f9f9f9;
-          inline-size: 300px;
-          block-size: 200px;
-          margin-inline: auto;
-          text-align: center;
+          display: grid;
+          grid-template-columns: 1fr 5fr;
+          grid-template-rows: 1;
+          align-items: center;
+          gap: 10px;
         "
       >
-      </textarea>
-    </div>
+        <label for="text" style="text-align: start">Text:</label>
+        <input
+          id="text"
+          name="text"
+          placeholder="job"
+          style="
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: transparent;
+            block-size: 30px;
+            padding-inline: 10px;
+          "
+        />
+      </div>
+
+      <div
+        style="
+          display: grid;
+          grid-template-columns: 1fr 5fr;
+          grid-template-rows: 1;
+          align-items: center;
+          gap: 10px;
+        "
+      >
+        <label for="labels" style="text-align: start">Labels:</label>
+        <input
+          id="labels"
+          name="labels"
+          placeholder="work, life, food"
+          style="
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: transparent;
+            block-size: 30px;
+            padding-inline: 10px;
+          "
+        />
+      </div>
+      <button
+        id="sendButton"
+        type="submit"
+        style="
+          padding: 10px 20px;
+          background-color: #4caf50;
+          color: white;
+          border: none;
+          border-radius: 5px;
+          inline-size: fit-content;
+          margin-inline: auto;
+          margin-inline-start: 180px;
+        "
+      >
+        Classify
+      </button>
+      <div
+        style="
+          display: grid;
+          grid-template-columns: 1fr 5fr;
+          grid-template-rows: 1;
+          align-items: center;
+          gap: 10px;
+        "
+      >
+        <label for="result" style="text-align: start">Result:</label>
+
+        <textarea
+          id="result"
+          style="
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            inline-size: 300px;
+            block-size: 200px;
+            margin-inline: auto;
+            text-align: center;
+          "
+        >
+        </textarea>
+      </div>
+    </form>
+
     <script type="module">
+      document
+        .querySelector("form")
+        .addEventListener("submit", (e) => e.preventDefault());
       const button = document.querySelector("#sendButton");
+      button.addEventListener("click", interferenceHandler);
       const klassify = new Worker("../../dist/klassify.worker.js", {
         type: "module",
       });
@@ -66,39 +131,48 @@
         payload: {
           config: {
             models: {
-              // demo_fa_ft: "../../models/trained/demo-persian.ftz",
-              // demo_en_ft: "../../models/trained/demo-english.ftz",
               // demo_en_ca: {
               //   baseURL:
               //     "https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/",
-              //   labels: ["Fullname", "Mobile Number", "Address", "Work"],
               // },
-              demo_xx_ca: {
+              demo_xx_candle: {
                 baseURL: "/models/trained/multilingual-e5-small/",
                 searchPrefix: "query: ",
                 documentPrefix: "passage: ",
               },
             },
-
-            preload: true,
+            preload: false,
           },
         },
       });
 
       klassify.onmessage = (e) => {
+        console.log("Worker message:", e.data);
+
         if (e.data.result) {
-          console.log("Classification result:", e.data.result);
           const resultElement = document.querySelector("#result");
           resultElement.value = e.data?.result?.label;
-        } else {
-          console.log("Worker message:", e.data);
         }
 
-        if (e.data.status && e.data.status === "READY") {
-          button.removeAttribute("disabled");
-          button.textContent = "Send";
-          button.style.cursor = "pointer";
-          button.addEventListener("click", interferenceHandler);
+        if (e.data.status) {
+          const status = e.data.status;
+          if (status === "LOADING") {
+            button.setAttribute("disabled", true);
+            button.textContent = "Loading...";
+            button.style.cursor = "auto";
+          } else if (status === "READY") {
+            button.removeAttribute("disabled");
+            button.textContent = "Classify";
+            button.style.cursor = "pointer";
+          } else if (status === "INITIALIZED") {
+            button.removeAttribute("disabled");
+            button.textContent = "Classify";
+            button.style.cursor = "pointer";
+          } else if (status === "WORKING") {
+            button.setAttribute("disabled", true);
+            button.textContent = "Working...";
+            button.style.cursor = "auto";
+          }
         }
       };
 
@@ -110,12 +184,7 @@
           payload: {
             text,
             modelId: "demo",
-            labels: {
-              "نام و نام خانوادگی": 1,
-              "تلفن همراه": 2,
-              "محل سکونت": 3,
-              کار: 4,
-            },
+            labels: document.querySelector("#labels")?.value.split(","),
           },
         });
       }

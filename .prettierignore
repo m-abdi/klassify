@@ -2,4 +2,4 @@ dist/
 data/
 node_modules/
 tests/
-src/core/libs/candle/candle/**
+src/core/backends/candle/candle/**

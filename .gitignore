@@ -1,6 +1,6 @@
-models/base/**
-models/trained/**
+models/**
 tests/*
 .vscode/
 node_modules/
 dist/
+.npmrc

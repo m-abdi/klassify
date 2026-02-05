@@ -1,25 +1,19 @@
-import Model from "./core/libs";
+import Model, { Status } from "./core/backends";
 import Result from "./core/entities/result";
-
-type Status = "INITIALIZED" | "READY" | "WORKING";
 
 type Config = {
   models: {
-    [key: string]:
-      | string
-      | {
-          baseURL: string;
-          searchPrefix?: string;
-          documentPrefix?: string;
-        };
+    [key: string]: {
+      baseURL: string;
+      searchPrefix?: string;
+      documentPrefix?: string;
+    };
   };
-  labels: {
-    [key: string]: number;
-  };
+  labels: string[];
   hasHeaders?: boolean;
   preload?: boolean;
   nomalize?: boolean;
-  onLoad?: () => any;
+  onChangeStatus?: (newStatus: Status) => any;
 };
 
 export default class Klassify {
@@ -40,18 +34,14 @@ export default class Klassify {
       const modelLang = modelInfo[1];
       const modelName = modelInfo[2];
 
-      if (modelName === "ft") {
-        import("./core/libs/fasttext/ft").then((res) => {
-          const model = new res.default({ url: value as any });
-          this.finalizeInitialization(modelId, modelLang, modelName, model);
-        });
-      } else if (modelName === "ca" && typeof value !== "string") {
-        import("./core/libs/candle/ca").then((res) => {
+      if (modelName === "candle" && typeof value !== "string") {
+        import("./core/backends/candle/candle").then((res) => {
           const model = new res.default({
             url: value?.baseURL,
             labels: Object.keys(config?.labels ?? {}),
             documentPrefix: value?.documentPrefix,
             searchPrefix: value?.searchPrefix,
+            onChangeStatus: (newStatus) => this.changeStatus(newStatus),
           });
           this.finalizeInitialization(modelId, modelLang, modelName, model);
         });
@@ -61,6 +51,7 @@ export default class Klassify {
 
   private changeStatus(newStatus: Status) {
     this.status = newStatus;
+    this?.config?.onChangeStatus?.(newStatus);
   }
 
   private finalizeInitialization(
@@ -86,7 +77,6 @@ export default class Klassify {
           this.loadedModels++;
           if (this.loadedModels === Object.keys(this.config?.models)?.length) {
             this.changeStatus("READY");
-            this.config?.onLoad?.();
           }
         }
       });
@@ -132,7 +122,6 @@ export default class Klassify {
     if (!this.models?.[modelId]) {
       return new Error("Invalid Model ID!");
     }
-    this.changeStatus("WORKING");
     if (this.config?.nomalize) {
       text = this.normalize(text);
     }
@@ -146,15 +135,13 @@ export default class Klassify {
         const classificationResult = await relatedModels[i][1].classify(text, {
           limit: 1,
           id,
-          labels: Object.keys(labels ?? {}),
+          labels,
         });
         results = [...results, ...classificationResult];
       }
       // implement combination of results later!
-      this.changeStatus("READY");
       return results[0];
     } else {
-      this.changeStatus("READY");
       return new Error("Language of the text is not supported.");
     }
   }

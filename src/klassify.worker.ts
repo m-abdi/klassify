@@ -1,3 +1,5 @@
+import { Status } from "./core/backends";
+
 let klassifyInstance: any;
 export interface Message {
   action: "init" | "classify";
@@ -18,11 +20,10 @@ self.onmessage = async (e: { data: Message }) => {
     case "init":
       klassifyInstance = new Klassify({
         ...(payload?.config as any),
-        onLoad() {
-          self.postMessage({ status: klassifyInstance.status });
+        onChangeStatus(newStatus: Status) {
+          self.postMessage({ status: newStatus });
         },
       });
-      self.postMessage({ status: klassifyInstance.status });
       break;
 
     case "classify":
@@ -30,11 +31,9 @@ self.onmessage = async (e: { data: Message }) => {
         self.postMessage({ error: "Klassify not initialized" });
         return;
       }
-      self.postMessage({ status: "WORKING" });
       const { text, modelId, id, labels } = payload;
       const result = await klassifyInstance.classify(text, modelId, id, labels);
       self.postMessage({ result });
-      self.postMessage({ status: klassifyInstance.status });
       break;
 
     default:

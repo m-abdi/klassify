@@ -1,51 +1,13 @@
-# text-classification
+#Klassify
 
-- Train persian models
-
-```
-fasttext supervised -input data/train/demo-persian.txt -output models/trained/demo-persian -pretrainedVectors models/base/cc.fa.300.vec -dim 300 -lr 1.0 -epoch 50 -wordNgrams 2 -minn 2 -maxn 8 -loss softmax -bucket 2000000 -thread 8 -minCount 1 -minCountLabel 1 -ws 5 -neg 10 -verbose 2
-```
-
-- Train english models
+mention web worker
+metntion candle rust framework
+mention cross-platform running(web supported: browsers, deno, ...)
 
 ```
-fasttext supervised -input data/train/demo-english.txt -output models/trained/demo-english -pretrainedVectors models/base/cc.en.300.vec -dim 300 -lr 1.0 -epoch 50 -wordNgrams 2 -minn 2 -maxn 8 -loss softmax -bucket 2000000 -thread 8 -minCount 1 -minCountLabel 1 -ws 5 -neg 10 -verbose 2
-```
-
-Quantize
-
-```
-fasttext quantize -input data/train/demo-persian.txt -output models/trained/demo-persian -cutoff 100000 -retrain -thread	9
-
-./fasttext quantize -input data/train/demo-english.txt -output models/trained/demo-english -cutoff 250000 -retrain -thread    9
-```
-
-Test
-
-```
-./fasttext test models/trained/demo-persian.bin data/test/demo-persian.txt > tests/demo-persian.txt
-
-./fasttext test models/trained/demo-english.bin data/test/demo-english.txt > tests/demo-english.txt
-```
-
-quantized version
-
+git subcommand
 ```
 
 ```
-
-fasttext test models/trained/demo-persian.ftz data/test/demo-persian.txt > tests/demo-persian-quantized.txt
-
-./fasttext test models/trained/demo-english.ftz data/test/demo-english.txt > tests/demo-english-quantized.txt
-
-```
-
-
-Interference
-```
-
-fasttext predict models/trained/demo-persian.bin -
-
-```
-
+npm i
 ```
