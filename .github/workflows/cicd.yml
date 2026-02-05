@@ -5,11 +5,12 @@ on:
     branches:
       - main
     tags:
-      - 'v*'
+      - "v*" # publish only on version tags
   pull_request:
 
 jobs:
-  test-build:
+  test:
+    name: Test & Format Check
     runs-on: ubuntu-latest
 
     steps:
@@ -19,28 +20,75 @@ jobs:
           submodules: recursive
 
       # =========================
-      # Cache Node dependencies
+      # Setup Node.js + dependencies
       # =========================
-      - name: Cache Node modules
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: node-modules-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            node-modules-
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
           registry-url: https://registry.npmjs.org/
 
+      - name: Cache Node modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: node-modules-${{ hashFiles('package-lock.json') }}
+          restore-keys: node-modules-
+
       - name: Install Node dependencies
         run: npm install
 
       # =========================
-      # Cache Cargo / Rust build
+      # Fail fast formatting check
       # =========================
+      - name: Check formatting
+        run: |
+          npm run format:check || (echo "Code is not formatted! Run 'npm run format'." && exit 1)
+
+      # =========================
+      # Run tests
+      # =========================
+      - name: Run tests
+        run: npm run test
+
+  build:
+    name: Build Candle WASM & JS
+    runs-on: ubuntu-latest
+    needs: test # only runs if test passes
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      # =========================
+      # Node.js setup for JS build
+      # =========================
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          registry-url: https://registry.npmjs.org/
+
+      - name: Cache Node modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: node-modules-${{ hashFiles('package-lock.json') }}
+          restore-keys: node-modules-
+
+      - name: Install Node dependencies
+        run: npm install
+
+      # =========================
+      # Rust + WASM setup
+      # =========================
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+
       - name: Cache Cargo registry
         uses: actions/cache@v3
         with:
@@ -57,26 +105,8 @@ jobs:
           key: cargo-target-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: cargo-target-
 
-      - name: Setup Rust
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: wasm32-unknown-unknown
-
       - name: Install wasm-bindgen
         run: cargo install wasm-bindgen-cli
-
-      # =========================
-      # Format check (fail fast)
-      # =========================
-      - name: Check formatting
-        run: |
-          npm run format:check || (echo "Code is not formatted! Run 'npm run format'." && exit 1)
-
-      # =========================
-      # Run tests
-      # =========================
-      - name: Run tests
-        run: npm run test
 
       # =========================
       # Build Candle WASM backend
@@ -89,16 +119,14 @@ jobs:
       # =========================
       # Build JS project
       # =========================
-      - name: Build project
+      - name: Build JS project
         run: npm run build
 
-  # =========================
-  # Publish only on tags
-  # =========================
   publish:
+    name: Publish to npm
     runs-on: ubuntu-latest
-    needs: test-build
-    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v') # only publish on tags
 
     steps:
       - name: Checkout repository
@@ -106,6 +134,9 @@ jobs:
         with:
           submodules: recursive
 
+      # =========================
+      # Node.js setup
+      # =========================
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -115,14 +146,21 @@ jobs:
       - name: Install Node dependencies
         run: npm install
 
+      # =========================
+      # Build Candle WASM backend
+      # =========================
       - name: Build Candle WASM backend
         run: |
           cd src/core/backends/candle/candle/candle-wasm-examples/bert/
           sh build-lib.sh
 
-      - name: Build project
+      # =========================
+      # Build JS project
+      - name: Build JS project
         run: npm run build
 
+      # =========================
+      # Publish to npm
       - name: Publish to npm
         run: npm publish
         env:
