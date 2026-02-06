@@ -64,7 +64,16 @@ Or with your favorite package manager.
 
 ## 🛠️ Build from Source
 
-If you want to build Klassify locally (including the WASM backend):
+If you want to build Klassify locally (including the WASM backend), you’ll need the following prerequisites:
+
+### Prerequisites
+
+- **Node.js** (>= 20)
+- **npm**
+- **Rust toolchain** (via `rustup`)
+  - https://rustup.rs
+
+Make sure `rustc`, `cargo`, and `rustup` are available in your PATH.
 
 ### 1. Clone the repository
 
