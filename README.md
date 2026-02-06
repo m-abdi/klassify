@@ -14,6 +14,13 @@ Klassify focuses on **privacy**, **performance**, and **cross-platform compatibi
 
 ---
 
+## 🚀 Demo
+
+👉 **Live Demo:**  
+<https://your-demo-link-here>
+
+---
+
 ## ✨ Features
 
 - ⚡ **Embedding-based classification** for fast and flexible text labeling
@@ -44,26 +51,6 @@ Klassify supports multiple inference backends:
   - Useful for larger models or centralized deployment
 
 The backend can be selected at runtime depending on your environment and performance needs.
-
----
-
-## 🌐 Cross-Platform Support
-
-Klassify is built on **Web-supported APIs**, allowing it to run consistently across:
-
-- Modern **web browsers**
-- **Node.js**
-- **Deno**
-- Edge and serverless runtimes with WASM support
-
-No platform-specific forks required.
-
----
-
-## 🚀 Demo
-
-👉 **Live Demo:**  
-<https://your-demo-link-here>
 
 ---
 
